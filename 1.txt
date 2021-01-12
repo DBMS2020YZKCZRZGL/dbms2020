@@ -1,0 +1,1227 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.8.2, pytest-6.1.1, py-1.9.0, pluggy-0.13.1 -- /usr/local/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/mac/Desktop/大数据/数据管理系统/bookstore-master 2
+collecting ... frontend begin test
+ * Serving Flask app "be.serve" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+collected 33 items
+
+fe/test/test_add_book.py::TestAddBook::test_ok ERROR                     [  3%]
+fe/test/test_add_book.py::TestAddBook::test_error_non_exist_store_id ERROR [  6%]
+fe/test/test_add_book.py::TestAddBook::test_error_exist_book_id ERROR    [  9%]
+fe/test/test_add_book.py::TestAddBook::test_error_non_exist_user_id ERROR [ 12%]
+fe/test/test_add_funds.py::TestAddFunds::test_ok ERROR                   [ 15%]
+fe/test/test_add_funds.py::TestAddFunds::test_error_user_id ERROR        [ 18%]
+fe/test/test_add_funds.py::TestAddFunds::test_error_password ERROR       [ 21%]
+fe/test/test_add_stock_level.py::TestAddStockLevel::test_error_user_id ERROR [ 24%]
+fe/test/test_add_stock_level.py::TestAddStockLevel::test_error_store_id ERROR [ 27%]
+fe/test/test_add_stock_level.py::TestAddStockLevel::test_error_book_id ERROR [ 30%]
+fe/test/test_add_stock_level.py::TestAddStockLevel::test_ok ERROR        [ 33%]
+fe/test/test_bench.py::test_bench FAILED                                 [ 36%]
+fe/test/test_create_store.py::TestCreateStore::test_ok FAILED            [ 39%]
+fe/test/test_create_store.py::TestCreateStore::test_error_exist_store_id FAILED [ 42%]
+fe/test/test_login.py::TestLogin::test_ok FAILED                         [ 45%]
+fe/test/test_login.py::TestLogin::test_error_user_id FAILED              [ 48%]
+fe/test/test_login.py::TestLogin::test_error_password FAILED             [ 51%]
+fe/test/test_new_order.py::TestNewOrder::test_non_exist_book_id ERROR    [ 54%]
+fe/test/test_new_order.py::TestNewOrder::test_low_stock_level ERROR      [ 57%]
+fe/test/test_new_order.py::TestNewOrder::test_ok ERROR                   [ 60%]
+fe/test/test_new_order.py::TestNewOrder::test_non_exist_user_id ERROR    [ 63%]
+fe/test/test_new_order.py::TestNewOrder::test_non_exist_store_id ERROR   [ 66%]
+fe/test/test_password.py::TestPassword::test_ok FAILED                   [ 69%]
+fe/test/test_password.py::TestPassword::test_error_password PASSED       [ 72%]
+fe/test/test_password.py::TestPassword::test_error_user_id PASSED        [ 75%]
+fe/test/test_payment.py::TestPayment::test_ok ERROR                      [ 78%]
+fe/test/test_payment.py::TestPayment::test_authorization_error ERROR     [ 81%]
+fe/test/test_payment.py::TestPayment::test_not_suff_funds ERROR          [ 84%]
+fe/test/test_payment.py::TestPayment::test_repeat_pay ERROR              [ 87%]
+fe/test/test_register.py::TestRegister::test_register_ok PASSED          [ 90%]
+fe/test/test_register.py::TestRegister::test_unregister_ok FAILED        [ 93%]
+fe/test/test_register.py::TestRegister::test_unregister_error_authorization PASSED [ 96%]
+fe/test/test_register.py::TestRegister::test_register_error_exist_user_id PASSED [100%]
+
+==================================== ERRORS ====================================
+____________________ ERROR at setup of TestAddBook.test_ok _____________________
+
+self = <test_add_book.TestAddBook object at 0x114e22250>
+
+    @pytest.fixture(autouse=True)
+    def pre_run_initialization(self):
+        # do before test
+        self.seller_id = "test_add_books_seller_id_{}".format(str(uuid.uuid1()))
+        self.store_id = "test_add_books_store_id_{}".format(str(uuid.uuid1()))
+        self.password = self.seller_id
+>       self.seller = register_new_seller(self.seller_id, self.password)
+
+fe/test/test_add_book.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+fe/access/new_seller.py:9: in register_new_seller
+    s = seller.Seller(conf.URL, user_id, password)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <fe.access.seller.Seller object at 0x114dfa8b0>
+url_prefix = 'http://127.0.0.1:5000/'
+seller_id = 'test_add_books_seller_id_e80777bc-5251-11eb-9f98-acde48001122'
+password = 'test_add_books_seller_id_e80777bc-5251-11eb-9f98-acde48001122'
+
+    def __init__(self, url_prefix, seller_id: str, password: str):
+        self.url_prefix = urljoin(url_prefix, "seller/")
+        self.seller_id = seller_id
+        self.password = password
+        self.terminal = "my terminal"
+        self.auth = Auth(url_prefix)
+        code, self.token = self.auth.login(self.seller_id, self.password, self.terminal)
+>       assert code == 200
+E       AssertionError
+
+fe/access/seller.py:15: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+'NoneType' object has no attribute 'fetchone'
+---------------------------- Captured stderr setup -----------------------------
+2021-01-09 16:08:50,383 [Thread-2    ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:50] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+2021-01-09 16:08:50,400 [Thread-3    ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:50] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+------------------------------ Captured log setup ------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:50] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:50] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+_________ ERROR at setup of TestAddBook.test_error_non_exist_store_id __________
+
+self = <test_add_book.TestAddBook object at 0x114eb4970>
+
+    @pytest.fixture(autouse=True)
+    def pre_run_initialization(self):
+        # do before test
+        self.seller_id = "test_add_books_seller_id_{}".format(str(uuid.uuid1()))
+        self.store_id = "test_add_books_store_id_{}".format(str(uuid.uuid1()))
+        self.password = self.seller_id
+>       self.seller = register_new_seller(self.seller_id, self.password)
+
+fe/test/test_add_book.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+fe/access/new_seller.py:9: in register_new_seller
+    s = seller.Seller(conf.URL, user_id, password)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <fe.access.seller.Seller object at 0x114e16670>
+url_prefix = 'http://127.0.0.1:5000/'
+seller_id = 'test_add_books_seller_id_e84d2d84-5251-11eb-9f98-acde48001122'
+password = 'test_add_books_seller_id_e84d2d84-5251-11eb-9f98-acde48001122'
+
+    def __init__(self, url_prefix, seller_id: str, password: str):
+        self.url_prefix = urljoin(url_prefix, "seller/")
+        self.seller_id = seller_id
+        self.password = password
+        self.terminal = "my terminal"
+        self.auth = Auth(url_prefix)
+        code, self.token = self.auth.login(self.seller_id, self.password, self.terminal)
+>       assert code == 200
+E       AssertionError
+
+fe/access/seller.py:15: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+'NoneType' object has no attribute 'fetchone'
+---------------------------- Captured stderr setup -----------------------------
+2021-01-09 16:08:50,827 [Thread-4    ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:50] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+2021-01-09 16:08:50,844 [Thread-5    ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:50] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+------------------------------ Captured log setup ------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:50] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:50] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+____________ ERROR at setup of TestAddBook.test_error_exist_book_id ____________
+
+self = <test_add_book.TestAddBook object at 0x114eb8700>
+
+    @pytest.fixture(autouse=True)
+    def pre_run_initialization(self):
+        # do before test
+        self.seller_id = "test_add_books_seller_id_{}".format(str(uuid.uuid1()))
+        self.store_id = "test_add_books_store_id_{}".format(str(uuid.uuid1()))
+        self.password = self.seller_id
+>       self.seller = register_new_seller(self.seller_id, self.password)
+
+fe/test/test_add_book.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+fe/access/new_seller.py:9: in register_new_seller
+    s = seller.Seller(conf.URL, user_id, password)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <fe.access.seller.Seller object at 0x114e2de80>
+url_prefix = 'http://127.0.0.1:5000/'
+seller_id = 'test_add_books_seller_id_e859556e-5251-11eb-9f98-acde48001122'
+password = 'test_add_books_seller_id_e859556e-5251-11eb-9f98-acde48001122'
+
+    def __init__(self, url_prefix, seller_id: str, password: str):
+        self.url_prefix = urljoin(url_prefix, "seller/")
+        self.seller_id = seller_id
+        self.password = password
+        self.terminal = "my terminal"
+        self.auth = Auth(url_prefix)
+        code, self.token = self.auth.login(self.seller_id, self.password, self.terminal)
+>       assert code == 200
+E       AssertionError
+
+fe/access/seller.py:15: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+'NoneType' object has no attribute 'fetchone'
+---------------------------- Captured stderr setup -----------------------------
+2021-01-09 16:08:50,907 [Thread-6    ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:50] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+2021-01-09 16:08:50,924 [Thread-7    ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:50] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+------------------------------ Captured log setup ------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:50] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:50] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+__________ ERROR at setup of TestAddBook.test_error_non_exist_user_id __________
+
+self = <test_add_book.TestAddBook object at 0x114ec8fd0>
+
+    @pytest.fixture(autouse=True)
+    def pre_run_initialization(self):
+        # do before test
+        self.seller_id = "test_add_books_seller_id_{}".format(str(uuid.uuid1()))
+        self.store_id = "test_add_books_store_id_{}".format(str(uuid.uuid1()))
+        self.password = self.seller_id
+>       self.seller = register_new_seller(self.seller_id, self.password)
+
+fe/test/test_add_book.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+fe/access/new_seller.py:9: in register_new_seller
+    s = seller.Seller(conf.URL, user_id, password)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <fe.access.seller.Seller object at 0x114e2d880>
+url_prefix = 'http://127.0.0.1:5000/'
+seller_id = 'test_add_books_seller_id_e8658de8-5251-11eb-9f98-acde48001122'
+password = 'test_add_books_seller_id_e8658de8-5251-11eb-9f98-acde48001122'
+
+    def __init__(self, url_prefix, seller_id: str, password: str):
+        self.url_prefix = urljoin(url_prefix, "seller/")
+        self.seller_id = seller_id
+        self.password = password
+        self.terminal = "my terminal"
+        self.auth = Auth(url_prefix)
+        code, self.token = self.auth.login(self.seller_id, self.password, self.terminal)
+>       assert code == 200
+E       AssertionError
+
+fe/access/seller.py:15: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+'NoneType' object has no attribute 'fetchone'
+---------------------------- Captured stderr setup -----------------------------
+2021-01-09 16:08:50,986 [Thread-8    ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:50] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+2021-01-09 16:08:51,003 [Thread-9    ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:51] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+------------------------------ Captured log setup ------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:50] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:51] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+____________________ ERROR at setup of TestAddFunds.test_ok ____________________
+
+self = <test_add_funds.TestAddFunds object at 0x114ed1c10>
+
+    @pytest.fixture(autouse=True)
+    def pre_run_initialization(self):
+        self.user_id = "test_add_funds_{}".format(str(uuid.uuid1()))
+        self.password = self.user_id
+>       self.buyer = register_new_buyer(self.user_id, self.password)
+
+fe/test/test_add_funds.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+fe/access/new_buyer.py:9: in register_new_buyer
+    s = buyer.Buyer(conf.URL, user_id, password)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <fe.access.buyer.Buyer object at 0x114ed12b0>
+url_prefix = 'http://127.0.0.1:5000/'
+user_id = 'test_add_funds_e871dba2-5251-11eb-9f98-acde48001122'
+password = 'test_add_funds_e871dba2-5251-11eb-9f98-acde48001122'
+
+    def __init__(self, url_prefix, user_id, password):
+        self.url_prefix = urljoin(url_prefix, "buyer/")
+        self.user_id = user_id
+        self.password = password
+        self.token = ""
+        self.terminal = "my terminal"
+        self.auth = Auth(url_prefix)
+        code, self.token = self.auth.login(self.user_id, self.password, self.terminal)
+>       assert code == 200
+E       AssertionError
+
+fe/access/buyer.py:16: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+'NoneType' object has no attribute 'fetchone'
+---------------------------- Captured stderr setup -----------------------------
+2021-01-09 16:08:51,067 [Thread-10   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:51] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+2021-01-09 16:08:51,083 [Thread-11   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:51] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+------------------------------ Captured log setup ------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:51] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:51] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+______________ ERROR at setup of TestAddFunds.test_error_user_id _______________
+
+self = <test_add_funds.TestAddFunds object at 0x114ee6a00>
+
+    @pytest.fixture(autouse=True)
+    def pre_run_initialization(self):
+        self.user_id = "test_add_funds_{}".format(str(uuid.uuid1()))
+        self.password = self.user_id
+>       self.buyer = register_new_buyer(self.user_id, self.password)
+
+fe/test/test_add_funds.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+fe/access/new_buyer.py:9: in register_new_buyer
+    s = buyer.Buyer(conf.URL, user_id, password)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <fe.access.buyer.Buyer object at 0x114ee6730>
+url_prefix = 'http://127.0.0.1:5000/'
+user_id = 'test_add_funds_e87d07fc-5251-11eb-9f98-acde48001122'
+password = 'test_add_funds_e87d07fc-5251-11eb-9f98-acde48001122'
+
+    def __init__(self, url_prefix, user_id, password):
+        self.url_prefix = urljoin(url_prefix, "buyer/")
+        self.user_id = user_id
+        self.password = password
+        self.token = ""
+        self.terminal = "my terminal"
+        self.auth = Auth(url_prefix)
+        code, self.token = self.auth.login(self.user_id, self.password, self.terminal)
+>       assert code == 200
+E       AssertionError
+
+fe/access/buyer.py:16: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+'NoneType' object has no attribute 'fetchone'
+---------------------------- Captured stderr setup -----------------------------
+2021-01-09 16:08:51,140 [Thread-12   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:51] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+2021-01-09 16:08:51,156 [Thread-13   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:51] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+------------------------------ Captured log setup ------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:51] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:51] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+______________ ERROR at setup of TestAddFunds.test_error_password ______________
+
+self = <test_add_funds.TestAddFunds object at 0x114eee430>
+
+    @pytest.fixture(autouse=True)
+    def pre_run_initialization(self):
+        self.user_id = "test_add_funds_{}".format(str(uuid.uuid1()))
+        self.password = self.user_id
+>       self.buyer = register_new_buyer(self.user_id, self.password)
+
+fe/test/test_add_funds.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+fe/access/new_buyer.py:9: in register_new_buyer
+    s = buyer.Buyer(conf.URL, user_id, password)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <fe.access.buyer.Buyer object at 0x114e7aeb0>
+url_prefix = 'http://127.0.0.1:5000/'
+user_id = 'test_add_funds_e887eeb0-5251-11eb-9f98-acde48001122'
+password = 'test_add_funds_e887eeb0-5251-11eb-9f98-acde48001122'
+
+    def __init__(self, url_prefix, user_id, password):
+        self.url_prefix = urljoin(url_prefix, "buyer/")
+        self.user_id = user_id
+        self.password = password
+        self.token = ""
+        self.terminal = "my terminal"
+        self.auth = Auth(url_prefix)
+        code, self.token = self.auth.login(self.user_id, self.password, self.terminal)
+>       assert code == 200
+E       AssertionError
+
+fe/access/buyer.py:16: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+'NoneType' object has no attribute 'fetchone'
+---------------------------- Captured stderr setup -----------------------------
+2021-01-09 16:08:51,211 [Thread-14   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:51] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+2021-01-09 16:08:51,228 [Thread-15   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:51] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+------------------------------ Captured log setup ------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:51] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:51] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+____________ ERROR at setup of TestAddStockLevel.test_error_user_id ____________
+
+self = <test_add_stock_level.TestAddStockLevel object at 0x114eef700>
+
+    @pytest.fixture(autouse=True)
+    def pre_run_initialization(self):
+        self.user_id = "test_add_book_stock_level1_user_{}".format(str(uuid.uuid1()))
+        self.store_id = "test_add_book_stock_level1_store_{}".format(str(uuid.uuid1()))
+        self.password = self.user_id
+>       self.seller = register_new_seller(self.user_id, self.password)
+
+fe/test/test_add_stock_level.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+fe/access/new_seller.py:9: in register_new_seller
+    s = seller.Seller(conf.URL, user_id, password)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <fe.access.seller.Seller object at 0x114ed1ca0>
+url_prefix = 'http://127.0.0.1:5000/'
+seller_id = 'test_add_book_stock_level1_user_e893549e-5251-11eb-9f98-acde48001122'
+password = 'test_add_book_stock_level1_user_e893549e-5251-11eb-9f98-acde48001122'
+
+    def __init__(self, url_prefix, seller_id: str, password: str):
+        self.url_prefix = urljoin(url_prefix, "seller/")
+        self.seller_id = seller_id
+        self.password = password
+        self.terminal = "my terminal"
+        self.auth = Auth(url_prefix)
+        code, self.token = self.auth.login(self.seller_id, self.password, self.terminal)
+>       assert code == 200
+E       AssertionError
+
+fe/access/seller.py:15: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+'NoneType' object has no attribute 'fetchone'
+---------------------------- Captured stderr setup -----------------------------
+2021-01-09 16:08:51,288 [Thread-16   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:51] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+2021-01-09 16:08:51,306 [Thread-17   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:51] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+------------------------------ Captured log setup ------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:51] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:51] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+___________ ERROR at setup of TestAddStockLevel.test_error_store_id ____________
+
+self = <test_add_stock_level.TestAddStockLevel object at 0x114ea3100>
+
+    @pytest.fixture(autouse=True)
+    def pre_run_initialization(self):
+        self.user_id = "test_add_book_stock_level1_user_{}".format(str(uuid.uuid1()))
+        self.store_id = "test_add_book_stock_level1_store_{}".format(str(uuid.uuid1()))
+        self.password = self.user_id
+>       self.seller = register_new_seller(self.user_id, self.password)
+
+fe/test/test_add_stock_level.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+fe/access/new_seller.py:9: in register_new_seller
+    s = seller.Seller(conf.URL, user_id, password)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <fe.access.seller.Seller object at 0x114ea3610>
+url_prefix = 'http://127.0.0.1:5000/'
+seller_id = 'test_add_book_stock_level1_user_e8a048fc-5251-11eb-9f98-acde48001122'
+password = 'test_add_book_stock_level1_user_e8a048fc-5251-11eb-9f98-acde48001122'
+
+    def __init__(self, url_prefix, seller_id: str, password: str):
+        self.url_prefix = urljoin(url_prefix, "seller/")
+        self.seller_id = seller_id
+        self.password = password
+        self.terminal = "my terminal"
+        self.auth = Auth(url_prefix)
+        code, self.token = self.auth.login(self.seller_id, self.password, self.terminal)
+>       assert code == 200
+E       AssertionError
+
+fe/access/seller.py:15: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+'NoneType' object has no attribute 'fetchone'
+---------------------------- Captured stderr setup -----------------------------
+2021-01-09 16:08:51,371 [Thread-18   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:51] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+2021-01-09 16:08:51,389 [Thread-19   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:51] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+------------------------------ Captured log setup ------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:51] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:51] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+____________ ERROR at setup of TestAddStockLevel.test_error_book_id ____________
+
+self = <test_add_stock_level.TestAddStockLevel object at 0x114ed1220>
+
+    @pytest.fixture(autouse=True)
+    def pre_run_initialization(self):
+        self.user_id = "test_add_book_stock_level1_user_{}".format(str(uuid.uuid1()))
+        self.store_id = "test_add_book_stock_level1_store_{}".format(str(uuid.uuid1()))
+        self.password = self.user_id
+>       self.seller = register_new_seller(self.user_id, self.password)
+
+fe/test/test_add_stock_level.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+fe/access/new_seller.py:9: in register_new_seller
+    s = seller.Seller(conf.URL, user_id, password)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <fe.access.seller.Seller object at 0x114ed12e0>
+url_prefix = 'http://127.0.0.1:5000/'
+seller_id = 'test_add_book_stock_level1_user_e8ac6da8-5251-11eb-9f98-acde48001122'
+password = 'test_add_book_stock_level1_user_e8ac6da8-5251-11eb-9f98-acde48001122'
+
+    def __init__(self, url_prefix, seller_id: str, password: str):
+        self.url_prefix = urljoin(url_prefix, "seller/")
+        self.seller_id = seller_id
+        self.password = password
+        self.terminal = "my terminal"
+        self.auth = Auth(url_prefix)
+        code, self.token = self.auth.login(self.seller_id, self.password, self.terminal)
+>       assert code == 200
+E       AssertionError
+
+fe/access/seller.py:15: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+'NoneType' object has no attribute 'fetchone'
+---------------------------- Captured stderr setup -----------------------------
+2021-01-09 16:08:51,451 [Thread-20   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:51] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+2021-01-09 16:08:51,467 [Thread-21   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:51] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+------------------------------ Captured log setup ------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:51] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:51] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+_________________ ERROR at setup of TestAddStockLevel.test_ok __________________
+
+self = <test_add_stock_level.TestAddStockLevel object at 0x114ee65b0>
+
+    @pytest.fixture(autouse=True)
+    def pre_run_initialization(self):
+        self.user_id = "test_add_book_stock_level1_user_{}".format(str(uuid.uuid1()))
+        self.store_id = "test_add_book_stock_level1_store_{}".format(str(uuid.uuid1()))
+        self.password = self.user_id
+>       self.seller = register_new_seller(self.user_id, self.password)
+
+fe/test/test_add_stock_level.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+fe/access/new_seller.py:9: in register_new_seller
+    s = seller.Seller(conf.URL, user_id, password)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <fe.access.seller.Seller object at 0x114ee6190>
+url_prefix = 'http://127.0.0.1:5000/'
+seller_id = 'test_add_book_stock_level1_user_e8b88084-5251-11eb-9f98-acde48001122'
+password = 'test_add_book_stock_level1_user_e8b88084-5251-11eb-9f98-acde48001122'
+
+    def __init__(self, url_prefix, seller_id: str, password: str):
+        self.url_prefix = urljoin(url_prefix, "seller/")
+        self.seller_id = seller_id
+        self.password = password
+        self.terminal = "my terminal"
+        self.auth = Auth(url_prefix)
+        code, self.token = self.auth.login(self.seller_id, self.password, self.terminal)
+>       assert code == 200
+E       AssertionError
+
+fe/access/seller.py:15: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+'NoneType' object has no attribute 'fetchone'
+---------------------------- Captured stderr setup -----------------------------
+2021-01-09 16:08:51,530 [Thread-22   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:51] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+2021-01-09 16:08:51,547 [Thread-23   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:51] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+------------------------------ Captured log setup ------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:51] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:51] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+____________ ERROR at setup of TestNewOrder.test_non_exist_book_id _____________
+
+self = <test_new_order.TestNewOrder object at 0x114f2f910>
+
+    @pytest.fixture(autouse=True)
+    def pre_run_initialization(self):
+        self.seller_id = "test_new_order_seller_id_{}".format(str(uuid.uuid1()))
+        self.store_id = "test_new_order_store_id_{}".format(str(uuid.uuid1()))
+        self.buyer_id = "test_new_order_buyer_id_{}".format(str(uuid.uuid1()))
+        self.password = self.seller_id
+>       self.buyer = register_new_buyer(self.buyer_id, self.password)
+
+fe/test/test_new_order.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+fe/access/new_buyer.py:9: in register_new_buyer
+    s = buyer.Buyer(conf.URL, user_id, password)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <fe.access.buyer.Buyer object at 0x114eee880>
+url_prefix = 'http://127.0.0.1:5000/'
+user_id = 'test_new_order_buyer_id_e9056f52-5251-11eb-9f98-acde48001122'
+password = 'test_new_order_seller_id_e90569c6-5251-11eb-9f98-acde48001122'
+
+    def __init__(self, url_prefix, user_id, password):
+        self.url_prefix = urljoin(url_prefix, "buyer/")
+        self.user_id = user_id
+        self.password = password
+        self.token = ""
+        self.terminal = "my terminal"
+        self.auth = Auth(url_prefix)
+        code, self.token = self.auth.login(self.user_id, self.password, self.terminal)
+>       assert code == 200
+E       AssertionError
+
+fe/access/buyer.py:16: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+'NoneType' object has no attribute 'fetchone'
+---------------------------- Captured stderr setup -----------------------------
+2021-01-09 16:08:52,034 [Thread-36   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:52] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+2021-01-09 16:08:52,050 [Thread-37   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:52] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+------------------------------ Captured log setup ------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:52] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:52] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+_____________ ERROR at setup of TestNewOrder.test_low_stock_level ______________
+
+self = <test_new_order.TestNewOrder object at 0x114fb1220>
+
+    @pytest.fixture(autouse=True)
+    def pre_run_initialization(self):
+        self.seller_id = "test_new_order_seller_id_{}".format(str(uuid.uuid1()))
+        self.store_id = "test_new_order_store_id_{}".format(str(uuid.uuid1()))
+        self.buyer_id = "test_new_order_buyer_id_{}".format(str(uuid.uuid1()))
+        self.password = self.seller_id
+>       self.buyer = register_new_buyer(self.buyer_id, self.password)
+
+fe/test/test_new_order.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+fe/access/new_buyer.py:9: in register_new_buyer
+    s = buyer.Buyer(conf.URL, user_id, password)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <fe.access.buyer.Buyer object at 0x114fb1dc0>
+url_prefix = 'http://127.0.0.1:5000/'
+user_id = 'test_new_order_buyer_id_e9114480-5251-11eb-9f98-acde48001122'
+password = 'test_new_order_seller_id_e9113eea-5251-11eb-9f98-acde48001122'
+
+    def __init__(self, url_prefix, user_id, password):
+        self.url_prefix = urljoin(url_prefix, "buyer/")
+        self.user_id = user_id
+        self.password = password
+        self.token = ""
+        self.terminal = "my terminal"
+        self.auth = Auth(url_prefix)
+        code, self.token = self.auth.login(self.user_id, self.password, self.terminal)
+>       assert code == 200
+E       AssertionError
+
+fe/access/buyer.py:16: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+'NoneType' object has no attribute 'fetchone'
+---------------------------- Captured stderr setup -----------------------------
+2021-01-09 16:08:52,111 [Thread-38   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:52] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+2021-01-09 16:08:52,127 [Thread-39   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:52] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+------------------------------ Captured log setup ------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:52] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:52] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+____________________ ERROR at setup of TestNewOrder.test_ok ____________________
+
+self = <test_new_order.TestNewOrder object at 0x114fad3a0>
+
+    @pytest.fixture(autouse=True)
+    def pre_run_initialization(self):
+        self.seller_id = "test_new_order_seller_id_{}".format(str(uuid.uuid1()))
+        self.store_id = "test_new_order_store_id_{}".format(str(uuid.uuid1()))
+        self.buyer_id = "test_new_order_buyer_id_{}".format(str(uuid.uuid1()))
+        self.password = self.seller_id
+>       self.buyer = register_new_buyer(self.buyer_id, self.password)
+
+fe/test/test_new_order.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+fe/access/new_buyer.py:9: in register_new_buyer
+    s = buyer.Buyer(conf.URL, user_id, password)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <fe.access.buyer.Buyer object at 0x114f5d2e0>
+url_prefix = 'http://127.0.0.1:5000/'
+user_id = 'test_new_order_buyer_id_e91cde1c-5251-11eb-9f98-acde48001122'
+password = 'test_new_order_seller_id_e91cd890-5251-11eb-9f98-acde48001122'
+
+    def __init__(self, url_prefix, user_id, password):
+        self.url_prefix = urljoin(url_prefix, "buyer/")
+        self.user_id = user_id
+        self.password = password
+        self.token = ""
+        self.terminal = "my terminal"
+        self.auth = Auth(url_prefix)
+        code, self.token = self.auth.login(self.user_id, self.password, self.terminal)
+>       assert code == 200
+E       AssertionError
+
+fe/access/buyer.py:16: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+'NoneType' object has no attribute 'fetchone'
+---------------------------- Captured stderr setup -----------------------------
+2021-01-09 16:08:52,187 [Thread-40   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:52] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+2021-01-09 16:08:52,203 [Thread-41   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:52] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+------------------------------ Captured log setup ------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:52] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:52] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+____________ ERROR at setup of TestNewOrder.test_non_exist_user_id _____________
+
+self = <test_new_order.TestNewOrder object at 0x114fc18e0>
+
+    @pytest.fixture(autouse=True)
+    def pre_run_initialization(self):
+        self.seller_id = "test_new_order_seller_id_{}".format(str(uuid.uuid1()))
+        self.store_id = "test_new_order_store_id_{}".format(str(uuid.uuid1()))
+        self.buyer_id = "test_new_order_buyer_id_{}".format(str(uuid.uuid1()))
+        self.password = self.seller_id
+>       self.buyer = register_new_buyer(self.buyer_id, self.password)
+
+fe/test/test_new_order.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+fe/access/new_buyer.py:9: in register_new_buyer
+    s = buyer.Buyer(conf.URL, user_id, password)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <fe.access.buyer.Buyer object at 0x114fc1850>
+url_prefix = 'http://127.0.0.1:5000/'
+user_id = 'test_new_order_buyer_id_e928c1dc-5251-11eb-9f98-acde48001122'
+password = 'test_new_order_seller_id_e928bc1e-5251-11eb-9f98-acde48001122'
+
+    def __init__(self, url_prefix, user_id, password):
+        self.url_prefix = urljoin(url_prefix, "buyer/")
+        self.user_id = user_id
+        self.password = password
+        self.token = ""
+        self.terminal = "my terminal"
+        self.auth = Auth(url_prefix)
+        code, self.token = self.auth.login(self.user_id, self.password, self.terminal)
+>       assert code == 200
+E       AssertionError
+
+fe/access/buyer.py:16: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+'NoneType' object has no attribute 'fetchone'
+---------------------------- Captured stderr setup -----------------------------
+2021-01-09 16:08:52,266 [Thread-42   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:52] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+2021-01-09 16:08:52,283 [Thread-43   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:52] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+------------------------------ Captured log setup ------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:52] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:52] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+____________ ERROR at setup of TestNewOrder.test_non_exist_store_id ____________
+
+self = <test_new_order.TestNewOrder object at 0x114f9ca30>
+
+    @pytest.fixture(autouse=True)
+    def pre_run_initialization(self):
+        self.seller_id = "test_new_order_seller_id_{}".format(str(uuid.uuid1()))
+        self.store_id = "test_new_order_store_id_{}".format(str(uuid.uuid1()))
+        self.buyer_id = "test_new_order_buyer_id_{}".format(str(uuid.uuid1()))
+        self.password = self.seller_id
+>       self.buyer = register_new_buyer(self.buyer_id, self.password)
+
+fe/test/test_new_order.py:15: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+fe/access/new_buyer.py:9: in register_new_buyer
+    s = buyer.Buyer(conf.URL, user_id, password)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <fe.access.buyer.Buyer object at 0x114f9ccd0>
+url_prefix = 'http://127.0.0.1:5000/'
+user_id = 'test_new_order_buyer_id_e934de90-5251-11eb-9f98-acde48001122'
+password = 'test_new_order_seller_id_e934d8fa-5251-11eb-9f98-acde48001122'
+
+    def __init__(self, url_prefix, user_id, password):
+        self.url_prefix = urljoin(url_prefix, "buyer/")
+        self.user_id = user_id
+        self.password = password
+        self.token = ""
+        self.terminal = "my terminal"
+        self.auth = Auth(url_prefix)
+        code, self.token = self.auth.login(self.user_id, self.password, self.terminal)
+>       assert code == 200
+E       AssertionError
+
+fe/access/buyer.py:16: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+'NoneType' object has no attribute 'fetchone'
+---------------------------- Captured stderr setup -----------------------------
+2021-01-09 16:08:52,344 [Thread-44   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:52] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+2021-01-09 16:08:52,360 [Thread-45   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:52] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+------------------------------ Captured log setup ------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:52] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:52] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+____________________ ERROR at setup of TestPayment.test_ok _____________________
+
+self = <test_payment.TestPayment object at 0x114f3bac0>
+
+    @pytest.fixture(autouse=True)
+    def pre_run_initialization(self):
+        self.seller_id = "test_payment_seller_id_{}".format(str(uuid.uuid1()))
+        self.store_id = "test_payment_store_id_{}".format(str(uuid.uuid1()))
+        self.buyer_id = "test_payment_buyer_id_{}".format(str(uuid.uuid1()))
+        self.password = self.seller_id
+>       gen_book = GenBook(self.seller_id, self.store_id)
+
+fe/test/test_payment.py:26: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+fe/test/gen_book_data.py:11: in __init__
+    self.seller = register_new_seller(self.user_id, self.password)
+fe/access/new_seller.py:9: in register_new_seller
+    s = seller.Seller(conf.URL, user_id, password)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <fe.access.seller.Seller object at 0x114f5ddf0>
+url_prefix = 'http://127.0.0.1:5000/'
+seller_id = 'test_payment_seller_id_e95a7ede-5251-11eb-9f98-acde48001122'
+password = 'test_payment_seller_id_e95a7ede-5251-11eb-9f98-acde48001122'
+
+    def __init__(self, url_prefix, seller_id: str, password: str):
+        self.url_prefix = urljoin(url_prefix, "seller/")
+        self.seller_id = seller_id
+        self.password = password
+        self.terminal = "my terminal"
+        self.auth = Auth(url_prefix)
+        code, self.token = self.auth.login(self.seller_id, self.password, self.terminal)
+>       assert code == 200
+E       AssertionError
+
+fe/access/seller.py:15: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+'NoneType' object has no attribute 'fetchone'
+---------------------------- Captured stderr setup -----------------------------
+2021-01-09 16:08:52,591 [Thread-54   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:52] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+2021-01-09 16:08:52,607 [Thread-55   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:52] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+------------------------------ Captured log setup ------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:52] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:52] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+____________ ERROR at setup of TestPayment.test_authorization_error ____________
+
+self = <test_payment.TestPayment object at 0x114fe7760>
+
+    @pytest.fixture(autouse=True)
+    def pre_run_initialization(self):
+        self.seller_id = "test_payment_seller_id_{}".format(str(uuid.uuid1()))
+        self.store_id = "test_payment_store_id_{}".format(str(uuid.uuid1()))
+        self.buyer_id = "test_payment_buyer_id_{}".format(str(uuid.uuid1()))
+        self.password = self.seller_id
+>       gen_book = GenBook(self.seller_id, self.store_id)
+
+fe/test/test_payment.py:26: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+fe/test/gen_book_data.py:11: in __init__
+    self.seller = register_new_seller(self.user_id, self.password)
+fe/access/new_seller.py:9: in register_new_seller
+    s = seller.Seller(conf.URL, user_id, password)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <fe.access.seller.Seller object at 0x114fe7220>
+url_prefix = 'http://127.0.0.1:5000/'
+seller_id = 'test_payment_seller_id_e9684456-5251-11eb-9f98-acde48001122'
+password = 'test_payment_seller_id_e9684456-5251-11eb-9f98-acde48001122'
+
+    def __init__(self, url_prefix, seller_id: str, password: str):
+        self.url_prefix = urljoin(url_prefix, "seller/")
+        self.seller_id = seller_id
+        self.password = password
+        self.terminal = "my terminal"
+        self.auth = Auth(url_prefix)
+        code, self.token = self.auth.login(self.seller_id, self.password, self.terminal)
+>       assert code == 200
+E       AssertionError
+
+fe/access/seller.py:15: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+'NoneType' object has no attribute 'fetchone'
+---------------------------- Captured stderr setup -----------------------------
+2021-01-09 16:08:52,681 [Thread-56   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:52] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+2021-01-09 16:08:52,697 [Thread-57   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:52] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+------------------------------ Captured log setup ------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:52] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:52] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+______________ ERROR at setup of TestPayment.test_not_suff_funds _______________
+
+self = <test_payment.TestPayment object at 0x114f9c820>
+
+    @pytest.fixture(autouse=True)
+    def pre_run_initialization(self):
+        self.seller_id = "test_payment_seller_id_{}".format(str(uuid.uuid1()))
+        self.store_id = "test_payment_store_id_{}".format(str(uuid.uuid1()))
+        self.buyer_id = "test_payment_buyer_id_{}".format(str(uuid.uuid1()))
+        self.password = self.seller_id
+>       gen_book = GenBook(self.seller_id, self.store_id)
+
+fe/test/test_payment.py:26: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+fe/test/gen_book_data.py:11: in __init__
+    self.seller = register_new_seller(self.user_id, self.password)
+fe/access/new_seller.py:9: in register_new_seller
+    s = seller.Seller(conf.URL, user_id, password)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <fe.access.seller.Seller object at 0x114f5d430>
+url_prefix = 'http://127.0.0.1:5000/'
+seller_id = 'test_payment_seller_id_e9767558-5251-11eb-9f98-acde48001122'
+password = 'test_payment_seller_id_e9767558-5251-11eb-9f98-acde48001122'
+
+    def __init__(self, url_prefix, seller_id: str, password: str):
+        self.url_prefix = urljoin(url_prefix, "seller/")
+        self.seller_id = seller_id
+        self.password = password
+        self.terminal = "my terminal"
+        self.auth = Auth(url_prefix)
+        code, self.token = self.auth.login(self.seller_id, self.password, self.terminal)
+>       assert code == 200
+E       AssertionError
+
+fe/access/seller.py:15: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+'NoneType' object has no attribute 'fetchone'
+---------------------------- Captured stderr setup -----------------------------
+2021-01-09 16:08:52,776 [Thread-58   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:52] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+2021-01-09 16:08:52,793 [Thread-59   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:52] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+------------------------------ Captured log setup ------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:52] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:52] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+________________ ERROR at setup of TestPayment.test_repeat_pay _________________
+
+self = <test_payment.TestPayment object at 0x115006670>
+
+    @pytest.fixture(autouse=True)
+    def pre_run_initialization(self):
+        self.seller_id = "test_payment_seller_id_{}".format(str(uuid.uuid1()))
+        self.store_id = "test_payment_store_id_{}".format(str(uuid.uuid1()))
+        self.buyer_id = "test_payment_buyer_id_{}".format(str(uuid.uuid1()))
+        self.password = self.seller_id
+>       gen_book = GenBook(self.seller_id, self.store_id)
+
+fe/test/test_payment.py:26: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+fe/test/gen_book_data.py:11: in __init__
+    self.seller = register_new_seller(self.user_id, self.password)
+fe/access/new_seller.py:9: in register_new_seller
+    s = seller.Seller(conf.URL, user_id, password)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <fe.access.seller.Seller object at 0x1150068b0>
+url_prefix = 'http://127.0.0.1:5000/'
+seller_id = 'test_payment_seller_id_e984b2da-5251-11eb-9f98-acde48001122'
+password = 'test_payment_seller_id_e984b2da-5251-11eb-9f98-acde48001122'
+
+    def __init__(self, url_prefix, seller_id: str, password: str):
+        self.url_prefix = urljoin(url_prefix, "seller/")
+        self.seller_id = seller_id
+        self.password = password
+        self.terminal = "my terminal"
+        self.auth = Auth(url_prefix)
+        code, self.token = self.auth.login(self.seller_id, self.password, self.terminal)
+>       assert code == 200
+E       AssertionError
+
+fe/access/seller.py:15: AssertionError
+---------------------------- Captured stdout setup -----------------------------
+'NoneType' object has no attribute 'fetchone'
+---------------------------- Captured stderr setup -----------------------------
+2021-01-09 16:08:52,868 [Thread-60   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:52] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+2021-01-09 16:08:52,884 [Thread-61   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:52] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+------------------------------ Captured log setup ------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:52] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:52] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+=================================== FAILURES ===================================
+__________________________________ test_bench __________________________________
+
+    def test_bench():
+        try:
+>           run_bench()
+
+fe/test/test_bench.py:6: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def run_bench():
+        wl = Workload()
+>       wl.gen_database()
+
+fe/bench/run.py:7: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <fe.bench.workload.Workload object at 0x114eefcd0>
+
+    def gen_database(self):
+        logging.info("load data")
+        for i in range(1, self.seller_num + 1):
+            user_id, password = self.to_seller_id_and_password(i)
+>           seller = register_new_seller(user_id, password)
+
+fe/bench/workload.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+user_id = 'seller_1_e8c4e9fa-5251-11eb-9f98-acde48001122'
+password = 'password_seller_1_e8c4e9fa-5251-11eb-9f98-acde48001122'
+
+    def register_new_seller(user_id, password) -> seller.Seller:
+        a = auth.Auth(conf.URL)
+        code = a.register(user_id, password)
+        assert code == 200
+>       s = seller.Seller(conf.URL, user_id, password)
+
+fe/access/new_seller.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <fe.access.seller.Seller object at 0x114eef7c0>
+url_prefix = 'http://127.0.0.1:5000/'
+seller_id = 'seller_1_e8c4e9fa-5251-11eb-9f98-acde48001122'
+password = 'password_seller_1_e8c4e9fa-5251-11eb-9f98-acde48001122'
+
+    def __init__(self, url_prefix, seller_id: str, password: str):
+        self.url_prefix = urljoin(url_prefix, "seller/")
+        self.seller_id = seller_id
+        self.password = password
+        self.terminal = "my terminal"
+        self.auth = Auth(url_prefix)
+        code, self.token = self.auth.login(self.seller_id, self.password, self.terminal)
+>       assert code == 200
+E       AssertionError
+
+fe/access/seller.py:15: AssertionError
+
+During handling of the above exception, another exception occurred:
+
+    def test_bench():
+        try:
+            run_bench()
+        except Exception as e:
+>           assert 200==100,"test_bench过程出现异常"
+E           AssertionError: test_bench过程出现异常
+E           assert 200 == 100
+E             +200
+E             -100
+
+fe/test/test_bench.py:8: AssertionError
+----------------------------- Captured stdout call -----------------------------
+'NoneType' object has no attribute 'fetchone'
+----------------------------- Captured stderr call -----------------------------
+2021-01-09 16:08:51,614 [Thread-24   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:51] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+2021-01-09 16:08:51,632 [Thread-25   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:51] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+------------------------------ Captured log call -------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:51] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:51] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+___________________________ TestCreateStore.test_ok ____________________________
+
+self = <test_create_store.TestCreateStore object at 0x114f0b5e0>
+
+    def test_ok(self):
+>       self.seller = register_new_seller(self.user_id, self.password)
+
+fe/test/test_create_store.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+fe/access/new_seller.py:9: in register_new_seller
+    s = seller.Seller(conf.URL, user_id, password)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <fe.access.seller.Seller object at 0x114f0b460>
+url_prefix = 'http://127.0.0.1:5000/'
+seller_id = 'test_create_store_user_e8d5fa6a-5251-11eb-9f98-acde48001122'
+password = 'test_create_store_user_e8d5fa6a-5251-11eb-9f98-acde48001122'
+
+    def __init__(self, url_prefix, seller_id: str, password: str):
+        self.url_prefix = urljoin(url_prefix, "seller/")
+        self.seller_id = seller_id
+        self.password = password
+        self.terminal = "my terminal"
+        self.auth = Auth(url_prefix)
+        code, self.token = self.auth.login(self.seller_id, self.password, self.terminal)
+>       assert code == 200
+E       AssertionError
+
+fe/access/seller.py:15: AssertionError
+----------------------------- Captured stdout call -----------------------------
+'NoneType' object has no attribute 'fetchone'
+----------------------------- Captured stderr call -----------------------------
+2021-01-09 16:08:51,725 [Thread-26   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:51] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+2021-01-09 16:08:51,741 [Thread-27   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:51] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+------------------------------ Captured log call -------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:51] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:51] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+__________________ TestCreateStore.test_error_exist_store_id ___________________
+
+self = <test_create_store.TestCreateStore object at 0x114f258e0>
+
+    def test_error_exist_store_id(self):
+>       self.seller = register_new_seller(self.user_id, self.password)
+
+fe/test/test_create_store.py:21: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+fe/access/new_seller.py:9: in register_new_seller
+    s = seller.Seller(conf.URL, user_id, password)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <fe.access.seller.Seller object at 0x114f252e0>
+url_prefix = 'http://127.0.0.1:5000/'
+seller_id = 'test_create_store_user_e8e0c5a8-5251-11eb-9f98-acde48001122'
+password = 'test_create_store_user_e8e0c5a8-5251-11eb-9f98-acde48001122'
+
+    def __init__(self, url_prefix, seller_id: str, password: str):
+        self.url_prefix = urljoin(url_prefix, "seller/")
+        self.seller_id = seller_id
+        self.password = password
+        self.terminal = "my terminal"
+        self.auth = Auth(url_prefix)
+        code, self.token = self.auth.login(self.seller_id, self.password, self.terminal)
+>       assert code == 200
+E       AssertionError
+
+fe/access/seller.py:15: AssertionError
+----------------------------- Captured stdout call -----------------------------
+'NoneType' object has no attribute 'fetchone'
+----------------------------- Captured stderr call -----------------------------
+2021-01-09 16:08:51,795 [Thread-28   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:51] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+2021-01-09 16:08:51,811 [Thread-29   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:51] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+------------------------------ Captured log call -------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:51] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:51] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+______________________________ TestLogin.test_ok _______________________________
+
+self = <test_login.TestLogin object at 0x114f5da90>
+
+    def test_ok(self):
+        code, token = self.auth.login(self.user_id, self.password, self.terminal)
+>       assert code == 200
+E       assert 530 == 200
+E         +530
+E         -200
+
+fe/test/test_login.py:22: AssertionError
+---------------------------- Captured stderr setup -----------------------------
+2021-01-09 16:08:51,863 [Thread-30   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:51] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+------------------------------ Captured log setup ------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:51] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+----------------------------- Captured stdout call -----------------------------
+'NoneType' object has no attribute 'fetchone'
+----------------------------- Captured stderr call -----------------------------
+2021-01-09 16:08:51,881 [Thread-31   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:51] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+------------------------------ Captured log call -------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:51] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+_________________________ TestLogin.test_error_user_id _________________________
+
+self = <test_login.TestLogin object at 0x114f58610>
+
+    def test_error_user_id(self):
+        code, token = self.auth.login(self.user_id + "_x", self.password, self.terminal)
+>       assert code == 401
+E       assert 530 == 401
+E         +530
+E         -401
+
+fe/test/test_login.py:35: AssertionError
+---------------------------- Captured stderr setup -----------------------------
+2021-01-09 16:08:51,919 [Thread-32   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:51] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+------------------------------ Captured log setup ------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:51] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+----------------------------- Captured stdout call -----------------------------
+'NoneType' object has no attribute 'fetchone'
+----------------------------- Captured stderr call -----------------------------
+2021-01-09 16:08:51,937 [Thread-33   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:51] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+------------------------------ Captured log call -------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:51] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+________________________ TestLogin.test_error_password _________________________
+
+self = <test_login.TestLogin object at 0x114f2f850>
+
+    def test_error_password(self):
+        code, token = self.auth.login(self.user_id, self.password + "_x", self.terminal)
+>       assert code == 401
+E       assert 530 == 401
+E         +530
+E         -401
+
+fe/test/test_login.py:39: AssertionError
+---------------------------- Captured stderr setup -----------------------------
+2021-01-09 16:08:51,976 [Thread-34   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:51] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+------------------------------ Captured log setup ------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:51] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+----------------------------- Captured stdout call -----------------------------
+'NoneType' object has no attribute 'fetchone'
+----------------------------- Captured stderr call -----------------------------
+2021-01-09 16:08:51,994 [Thread-35   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:51] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+------------------------------ Captured log call -------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:51] "[35m[1mPOST /auth/login HTTP/1.1[0m" 530 -
+_____________________________ TestPassword.test_ok _____________________________
+
+self = <test_password.TestPassword object at 0x114f3b790>
+
+    def test_ok(self):
+        code = self.auth.password(self.user_id, self.old_password, self.new_password)
+>       assert code == 200
+E       assert 530 == 200
+E         +530
+E         -200
+
+fe/test/test_password.py:24: AssertionError
+---------------------------- Captured stderr setup -----------------------------
+2021-01-09 16:08:52,422 [Thread-46   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:52] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+------------------------------ Captured log setup ------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:52] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+----------------------------- Captured stderr call -----------------------------
+2021-01-09 16:08:52,439 [Thread-47   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:52] "[35m[1mPOST /auth/password HTTP/1.1[0m" 530 -
+------------------------------ Captured log call -------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:52] "[35m[1mPOST /auth/password HTTP/1.1[0m" 530 -
+_______________________ TestRegister.test_unregister_ok ________________________
+
+self = <test_register.TestRegister object at 0x114ff1730>
+
+    def test_unregister_ok(self):
+        code = self.auth.register(self.user_id, self.password)
+        assert code == 200
+    
+        code = self.auth.unregister(self.user_id, self.password)
+>       assert code == 200
+E       assert 530 == 200
+E         +530
+E         -200
+
+fe/test/test_register.py:26: AssertionError
+----------------------------- Captured stderr call -----------------------------
+2021-01-09 16:08:52,984 [Thread-63   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:52] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+2021-01-09 16:08:52,999 [Thread-64   ] [INFO ]  127.0.0.1 - - [09/Jan/2021 16:08:52] "[35m[1mPOST /auth/unregister HTTP/1.1[0m" 530 -
+------------------------------ Captured log call -------------------------------
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:52] "[37mPOST /auth/register HTTP/1.1[0m" 200 -
+INFO     werkzeug:_internal.py:113 127.0.0.1 - - [09/Jan/2021 16:08:52] "[35m[1mPOST /auth/unregister HTTP/1.1[0m" 530 -
+=========================== short test summary info ============================
+FAILED fe/test/test_bench.py::test_bench - AssertionError: test_bench过程出现...
+FAILED fe/test/test_create_store.py::TestCreateStore::test_ok - AssertionError
+FAILED fe/test/test_create_store.py::TestCreateStore::test_error_exist_store_id
+FAILED fe/test/test_login.py::TestLogin::test_ok - assert 530 == 200
+FAILED fe/test/test_login.py::TestLogin::test_error_user_id - assert 530 == 401
+FAILED fe/test/test_login.py::TestLogin::test_error_password - assert 530 == 401
+FAILED fe/test/test_password.py::TestPassword::test_ok - assert 530 == 200
+FAILED fe/test/test_register.py::TestRegister::test_unregister_ok - assert 53...
+ERROR fe/test/test_add_book.py::TestAddBook::test_ok - AssertionError
+ERROR fe/test/test_add_book.py::TestAddBook::test_error_non_exist_store_id - ...
+ERROR fe/test/test_add_book.py::TestAddBook::test_error_exist_book_id - Asser...
+ERROR fe/test/test_add_book.py::TestAddBook::test_error_non_exist_user_id - A...
+ERROR fe/test/test_add_funds.py::TestAddFunds::test_ok - AssertionError
+ERROR fe/test/test_add_funds.py::TestAddFunds::test_error_user_id - Assertion...
+ERROR fe/test/test_add_funds.py::TestAddFunds::test_error_password - Assertio...
+ERROR fe/test/test_add_stock_level.py::TestAddStockLevel::test_error_user_id
+ERROR fe/test/test_add_stock_level.py::TestAddStockLevel::test_error_store_id
+ERROR fe/test/test_add_stock_level.py::TestAddStockLevel::test_error_book_id
+ERROR fe/test/test_add_stock_level.py::TestAddStockLevel::test_ok - Assertion...
+ERROR fe/test/test_new_order.py::TestNewOrder::test_non_exist_book_id - Asser...
+ERROR fe/test/test_new_order.py::TestNewOrder::test_low_stock_level - Asserti...
+ERROR fe/test/test_new_order.py::TestNewOrder::test_ok - AssertionError
+ERROR fe/test/test_new_order.py::TestNewOrder::test_non_exist_user_id - Asser...
+ERROR fe/test/test_new_order.py::TestNewOrder::test_non_exist_store_id - Asse...
+ERROR fe/test/test_payment.py::TestPayment::test_ok - AssertionError
+ERROR fe/test/test_payment.py::TestPayment::test_authorization_error - Assert...
+ERROR fe/test/test_payment.py::TestPayment::test_not_suff_funds - AssertionError
+ERROR fe/test/test_payment.py::TestPayment::test_repeat_pay - AssertionError
+==================== 8 failed, 5 passed, 20 errors in 5.22s ====================
+frontend end test
+No data to combine
+Name                              Stmts   Miss Branch BrPart  Cover
+-------------------------------------------------------------------
+be/__init__.py                        0      0      0      0   100%
+be/app.py                             3      3      2      0     0%
+be/model/__init__.py                  0      0      0      0   100%
+be/model/buyer.py                   111    100     48      0     7%
+be/model/db_conn.py                  22     15      6      0    25%
+be/model/error.py                    23     11      0      0    52%
+be/model/seller.py                   49     41     22      0    11%
+be/model/store.py                    46      7     12      6    78%
+be/model/user.py                    120     70     38      3    34%
+be/serve.py                          35      1      2      1    95%
+be/view/__init__.py                   0      0      0      0   100%
+be/view/auth.py                      42      5      0      0    88%
+be/view/buyer.py                     34     23      2      0    31%
+be/view/seller.py                    31     19      0      0    39%
+fe/__init__.py                        0      0      0      0   100%
+fe/access/__init__.py                 0      0      0      0   100%
+fe/access/auth.py                    31      5      0      0    84%
+fe/access/book.py                    71     34     12      1    46%
+fe/access/buyer.py                   36     19      2      0    45%
+fe/access/new_buyer.py                8      1      0      0    88%
+fe/access/new_seller.py               8      1      0      0    88%
+fe/access/seller.py                  31     15      0      0    52%
+fe/bench/__init__.py                  0      0      0      0   100%
+fe/bench/run.py                      13      8      6      0    26%
+fe/bench/session.py                  47     37     12      0    17%
+fe/bench/workload.py                125     69     22      2    39%
+fe/conf.py                           11      0      0      0   100%
+fe/conftest.py                       17      0      0      0   100%
+fe/test/gen_book_data.py             48     37     16      0    17%
+fe/test/test_add_book.py             36     21     10      0    33%
+fe/test/test_add_funds.py            23     11      0      0    52%
+fe/test/test_add_stock_level.py      39     24     10      0    31%
+fe/test/test_bench.py                 6      0      0      0   100%
+fe/test/test_create_store.py         20      6      0      0    70%
+fe/test/test_login.py                28      6      0      0    79%
+fe/test/test_new_order.py            40     23      0      0    42%
+fe/test/test_password.py             33      6      0      0    82%
+fe/test/test_payment.py              60     34      4      0    41%
+fe/test/test_register.py             31      0      0      0   100%
+-------------------------------------------------------------------
+TOTAL                              1278    652    226     13    42%
